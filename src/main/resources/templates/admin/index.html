@@ -7,24 +7,28 @@
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">
     <link th:href="@{/css/style-admin.css}" rel="stylesheet">
-    <!-- Bootstrap CSS -->
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{/css/style.css}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-	<!-- Role Check -->
-    <div th:if="${session.userLogin.role != 1}" style="text-align: center; margin-top: 50px;">
-	    <h2 style="color: #d9534f; font-family: Arial, sans-serif;">You do not have access to this page</h2>
-	    <a th:href="@{/home}" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #5bc0de; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
-	        Go back to home
-	    </a>
-	</div>
-    
-     <div th:if="${session.userLogin.role == 1}">
-    <!-- Sidebar -->
-	<div th:replace="partials/sidebar"></div>
 
+<!-- Nếu chưa login hoặc không phải role=1 -->
+<div th:if="${session.userLogin == null or session.userLogin.role != 1}"
+     style="text-align: center; margin-top: 50px;">
+    <h2 style="color: #d9534f; font-family: Arial, sans-serif;">
+        You do not have access to this page
+    </h2>
+    <a th:href="@{/home}"
+       style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #5bc0de; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+        Go back to home
+    </a>
+</div>
+
+<!-- Nếu đã login và role=1 -->
+<div th:if="${session.userLogin != null and session.userLogin.role == 1}">
+
+    <!-- Sidebar -->
+    <div th:replace="partials/sidebar"></div>
 
     <!-- Page Content -->
     <div id="content">
@@ -84,30 +88,27 @@
                     <h2>Book List</h2>
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Author</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="book : ${books}">
-                                <td th:text="${book.id}"></td>
-                                <td th:text="${book.name}"></td>
-                                <td th:text="${book.author.fullName}"></td>
-                                <td th:text="${book.price}"></td>
-                      
-                                <td>
-                                    <span th:text="${book.status}"></span>
-                                </td>
-                                <td>
-                                    <a href="/admin/books/edit/{id}" th:href="@{/admin/books/edit/{id}(id=${book.id})}" class="btn btn-primary btn-sm">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteBook(' + ${book.id} + ')'">Delete</a>
-                                </td>
-                            </tr>
+                        <tr th:each="book : ${books}">
+                            <td th:text="${book.id}"></td>
+                            <td th:text="${book.name}"></td>
+                            <td th:text="${book.author.fullName}"></td>
+                            <td th:text="${book.price}"></td>
+                            <td><span th:text="${book.status}"></span></td>
+                            <td>
+                                <a th:href="@{/admin/books/edit/{id}(id=${book.id})}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteBook(' + ${book.id} + ')'">Delete</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -119,27 +120,27 @@
                     <h2>Order List</h2>
                     <table class="table table-bordered">
                         <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>Customer</th>
-                                <th>Total</th>
-                                <th>Status</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="order : ${orders}">
-                                <td th:text="${order.id}"></td>
-                                <td th:text="${order.user.fullName}"></td>
-                                <td th:text="${order.total}"></td>
-                                <td th:text="${order.status}"></td>
-                                <td th:text="${order.date}"></td>
-                                <td>
-                                    <a href="/admin/orders/view/{id}" th:href="@{/admin/orders/view/{id}(id=${order.id})}" class="btn btn-info btn-sm">View</a>
-                                    <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteOrder(' + ${order.id} + ')'">Delete</a>
-                                </td>
-                            </tr>
+                        <tr th:each="order : ${orders}">
+                            <td th:text="${order.id}"></td>
+                            <td th:text="${order.user.fullName}"></td>
+                            <td th:text="${order.total}"></td>
+                            <td th:text="${order.status}"></td>
+                            <td th:text="${order.date}"></td>
+                            <td>
+                                <a th:href="@{/admin/orders/view/{id}(id=${order.id})}" class="btn btn-info btn-sm">View</a>
+                                <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteOrder(' + ${order.id} + ')'">Delete</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -151,56 +152,39 @@
                     <h2>User List</h2>
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>User ID</th>
-                                <th>Họ tên</th>
-                                <th>Email</th>
-                                <th>Địa chỉ</th>
-                                <th>Telephone</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Họ tên</th>
+                            <th>Email</th>
+                            <th>Địa chỉ</th>
+                            <th>Telephone</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user : ${users}">
-                                <td th:text="${user.id}"></td>
-                                <td th:text="${user.fullName}"></td>
-                                <td th:text="${user.email}"></td>
-                                <td th:text="${user.address}"></td>
-                                <td th:text="${user.telephone}"></td>
-                                <td>
-                                    <a href="/admin/users/edit/{id}" th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteUser(' + ${user.id} + ')'">Delete</a>
-                                </td>
-                            </tr>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.fullName}"></td>
+                            <td th:text="${user.email}"></td>
+                            <td th:text="${user.address}"></td>
+                            <td th:text="${user.telephone}"></td>
+                            <td>
+                                <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteUser(' + ${user.id} + ')'">Delete</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- Settings Section -->
-            <div class="row mt-4">
-                <div class="col-md-12">
-                    <h2>Site Settings</h2>
-                    <form action="/admin/settings/site" method="post">
-                        <div class="mb-3">
-                            <label for="siteName" class="form-label">Site Name</label>
-                            <input type="text" class="form-control" id="siteName" name="siteName" th:value="${settings.siteName}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="siteDescription" class="form-label">Site Description</label>
-                            <textarea class="form-control" id="siteDescription" name="siteDescription" rows="3" th:text="${settings.siteDescription}"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </form>
-                </div>
-            </div>
+            
         </div>
     </div>
+</div>
 
-    <!-- Scripts -->
-    <script th:src="@{/js/jquery.min.js}"></script>
-    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <script th:src="@{/js/main-admin.js}"></script>
-    </div>	
+<!-- Scripts -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/main-admin.js}"></script>
 </body>
 </html>
