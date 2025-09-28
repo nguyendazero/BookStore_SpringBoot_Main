@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -117,9 +119,11 @@ public class UserController {
 	    try {
 	        SimpleMailMessage message = new SimpleMailMessage();
 	        message.setTo(email);
+            message.setFrom("gillkaijame@gmail.com");
 	        message.setSubject("Xác thực tài khoản");
 	        message.setText("Mã xác thực của bạn là: " + verificationCode + "\nMã xác thực có hiệu lực trong 1 phút.");
-	        javaMailSender.send(message);
+            
+            javaMailSender.send(message);
 	    } catch (MailException e) {
 	        model.addAttribute("error", "Gửi email thất bại. Vui lòng thử lại!");
 	        return "register";
@@ -139,9 +143,6 @@ public class UserController {
 
 	    return "verify";
 	}
-
-
-
 
 	@PostMapping("/user/verify")
 	public String verifyCode(

@@ -39,7 +39,7 @@
             </button>
             <a class="navbar-brand ms-3" href="#">Bookstore Admin</a>
             <div class="ml-auto">
-                <a href="/admin/profile" class="btn btn-secondary me-2">Profile</a>
+                <a class="btn btn-secondary me-2">Profile</a>
                 <a th:href="@{/user/logout}" class="btn btn-danger">Logout</a>
             </div>
         </nav>
@@ -94,7 +94,6 @@
                             <th>Author</th>
                             <th>Price</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -104,10 +103,6 @@
                             <td th:text="${book.author.fullName}"></td>
                             <td th:text="${book.price}"></td>
                             <td><span th:text="${book.status}"></span></td>
-                            <td>
-                                <a th:href="@{/admin/books/edit/{id}(id=${book.id})}" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteBook(' + ${book.id} + ')'">Delete</a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -126,7 +121,6 @@
                             <th>Total</th>
                             <th>Status</th>
                             <th>Date</th>
-                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -136,10 +130,6 @@
                             <td th:text="${order.total}"></td>
                             <td th:text="${order.status}"></td>
                             <td th:text="${order.date}"></td>
-                            <td>
-                                <a th:href="@{/admin/orders/view/{id}(id=${order.id})}" class="btn btn-info btn-sm">View</a>
-                                <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteOrder(' + ${order.id} + ')'">Delete</a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -158,7 +148,6 @@
                             <th>Email</th>
                             <th>Địa chỉ</th>
                             <th>Telephone</th>
-                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -168,10 +157,6 @@
                             <td th:text="${user.email}"></td>
                             <td th:text="${user.address}"></td>
                             <td th:text="${user.telephone}"></td>
-                            <td>
-                                <a th:href="@{/admin/users/edit/{id}(id=${user.id})}" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="#" class="btn btn-danger btn-sm" th:onclick="'deleteUser(' + ${user.id} + ')'">Delete</a>
-                            </td>
                         </tr>
                         </tbody>
                     </table>

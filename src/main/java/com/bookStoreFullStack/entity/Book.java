@@ -41,7 +41,7 @@ public class Book {
 	@Column(name = "status")
 	private String status;
 	
-	@Column(name = "description")
+	@Column(name = "description", columnDefinition = "TEXT")
 	private String description;
 	
 	@Column(name = "quantity")
